@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Upload, FileArchive, XCircle, AlertCircle, Loader2, UploadCloud } from 'lucide-react';
+import { Upload, FileArchive, XCircle, AlertCircle, Loader2, UploadCloud, ArrowDownCircle } from 'lucide-react';
 import { ProcessingState } from '../types';
 
 interface FileUploaderProps {
@@ -48,6 +48,14 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileSelect, state }) => {
 
   const onButtonClick = () => {
     inputRef.current?.click();
+  };
+
+  const scrollToInstructions = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const element = document.getElementById('instructions');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -123,6 +131,18 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileSelect, state }) => {
           )}
         </div>
       </div>
+      
+      {state.status !== 'error' && state.status !== 'processing' && (
+        <div className="mt-4 text-center">
+          <button 
+            onClick={scrollToInstructions}
+            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-900/10 text-blue-600 dark:text-blue-300 text-sm font-medium hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
+          >
+            <ArrowDownCircle size={16} className="group-hover:translate-y-0.5 transition-transform" />
+            Confused? See 18 detailed screenshots below
+          </button>
+        </div>
+      )}
       
       {state.status === 'error' && (
         <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-900/30 rounded-xl flex gap-3 text-amber-800 dark:text-amber-200 text-sm">
